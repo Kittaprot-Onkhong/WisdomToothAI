@@ -4,7 +4,8 @@ from typing import Dict, Optional
 
 import cv2
 
-from .config import LEFT, MIDLINE_COLOR, OUTLINE_COLOR, RIGHT, SIDES, SIDE_COLOR, SIDE_TOOTH
+from .config import (MIDLINE_COLOR, OUTLINE_COLOR, RIGHT, SIDES, SIDE_COLOR,
+                     SIDE_TOOTH, TEXT_SCALE)
 from .detector import Detection
 from .filtering import midpoint
 
@@ -18,7 +19,7 @@ def put_outlined_text(image, text, origin, color, scale, thickness):
     (instead of relying on putText's thickness, which differs between OpenCV versions).
     """
     x, y = origin
-    r = max(2, int(round(scale * 2.5)))          # border width in pixels
+    r = max(1, int(round(scale * 2)))            # border width in pixels
     for dx in (-r, 0, r):
         for dy in (-r, 0, r):
             if dx or dy:
@@ -36,9 +37,10 @@ def draw_result(image, chosen: Dict[str, Optional[Detection]], draw_midline: boo
     out = image.copy()
     height, width = out.shape[:2]
 
-    scale = max(0.5, width / 1500)               # text scales with image size
-    thickness = max(2, int(round(scale * 2)))
-    box_thickness = max(2, int(round(scale * 3)))
+    base = width / 1500                              # scales with image size
+    scale = max(0.4, base * TEXT_SCALE)              # text size (set TEXT_SCALE in config.py)
+    thickness = max(1, int(round(scale * 2)))
+    box_thickness = max(2, int(round(base * 3)))     # box line keeps its normal width
 
     if draw_midline:
         cv2.line(out, (midpoint(width), 0), (midpoint(width), height - 1), MIDLINE_COLOR, 2)
