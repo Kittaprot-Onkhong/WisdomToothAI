@@ -1,0 +1,3 @@
+# OpenCV, numpy and pandas are already in Colab (and `inference` pulls in OpenCV),
+# so they are intentionally NOT listed — installing a second OpenCV build can clash.
+inference
