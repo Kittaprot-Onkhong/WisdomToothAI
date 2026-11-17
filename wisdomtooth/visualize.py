@@ -4,8 +4,7 @@ from typing import Dict, Optional
 
 import cv2
 
-from .config import (MIDLINE_COLOR, OUTLINE_COLOR, RIGHT, SIDES, SIDE_COLOR,
-                     SIDE_TOOTH, TEXT_SCALE)
+from .config import LEFT, MIDLINE_COLOR, OUTLINE_COLOR, RIGHT, SIDES, SIDE_COLOR, SIDE_TOOTH
 from .detector import Detection
 from .filtering import midpoint
 
@@ -19,7 +18,7 @@ def put_outlined_text(image, text, origin, color, scale, thickness):
     (instead of relying on putText's thickness, which differs between OpenCV versions).
     """
     x, y = origin
-    r = max(1, int(round(scale * 2)))            # border width in pixels
+    r = max(2, int(round(scale * 2.5)))          # border width in pixels
     for dx in (-r, 0, r):
         for dy in (-r, 0, r):
             if dx or dy:
@@ -37,10 +36,9 @@ def draw_result(image, chosen: Dict[str, Optional[Detection]], draw_midline: boo
     out = image.copy()
     height, width = out.shape[:2]
 
-    base = width / 1500                              # scales with image size
-    scale = max(0.4, base * TEXT_SCALE)              # text size (set TEXT_SCALE in config.py)
-    thickness = max(1, int(round(scale * 2)))
-    box_thickness = max(2, int(round(base * 3)))     # box line keeps its normal width
+    scale = max(0.5, width / 1500)               # text scales with image size
+    thickness = max(2, int(round(scale * 2)))
+    box_thickness = max(2, int(round(scale * 3)))
 
     if draw_midline:
         cv2.line(out, (midpoint(width), 0), (midpoint(width), height - 1), MIDLINE_COLOR, 2)
@@ -56,7 +54,7 @@ def draw_result(image, chosen: Dict[str, Optional[Detection]], draw_midline: boo
         y2 = int(_clamp(round(det.y2), 0, height - 1))
         cv2.rectangle(out, (x1, y1), (x2, y2), color, box_thickness)
 
-        label = f"{side} {SIDE_TOOTH[side]} | {det.class_name} {det.confidence:.2f}"
+        label = f"{SIDE_TOOTH[side]} {side} {det.confidence:.2f}"
         (_, text_h), baseline = cv2.getTextSize(label, FONT, scale, thickness)
         label_y = y1 - 8 if y1 - 8 - text_h > 0 else y1 + text_h + 8   # keep text inside image
         label_y = int(_clamp(label_y, text_h + 2, height - baseline - 2))

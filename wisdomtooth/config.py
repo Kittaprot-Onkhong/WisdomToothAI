@@ -35,7 +35,6 @@ SIDE_TOOTH = {RIGHT: "48", LEFT: "38"}
 SIDE_COLOR = {RIGHT: (255, 0, 0), LEFT: (0, 0, 255)}  # BGR: blue / red
 OUTLINE_COLOR = (0, 0, 0)                              # dark text border
 MIDLINE_COLOR = (0, 255, 255)                          # yellow reference line
-TEXT_SCALE = 0.7
 
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".tif", ".tiff"}
 
