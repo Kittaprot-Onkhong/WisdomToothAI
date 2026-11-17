@@ -26,16 +26,13 @@ WisdomToothAI/
 │   ├── visualize.py           # วาดกรอบ/ข้อความมีขอบ
 │   ├── export.py              # CSV / JSON / ZIP
 │   └── pipeline.py            # ประกอบทุกอย่างเข้าด้วยกัน
-├── tests/test_wisdomtooth.py  # เทสต์ออฟไลน์ (ไม่ต้องมี API key)
+├── tests/test_wisdomtooth.py  
 └── test_images/               # ← อัปโหลดรูปทดสอบ 100 รูปที่นี่
 ```
 
 ## วิธีใช้
-1. สร้าง GitHub repo แล้ว push ไฟล์ทั้งหมดนี้ขึ้นไป จากนั้นอัปโหลดรูปทดสอบไปที่ `test_images/`
-2. เปิด `WisdomToothAI.ipynb` ใน Colab (File → Open notebook → GitHub) แล้วเลือก **T4 GPU**
-3. ใน 🔑 Secrets เพิ่ม `ROBOFLOW_API_KEY` (เปิด Notebook access) — ถ้า repo เป็น **private** เพิ่ม `GITHUB_TOKEN` ด้วย
-4. ขั้นที่ 1: กรอก `GITHUB_OWNER` (และ `GITHUB_REPO` / `GITHUB_BRANCH` ถ้าต่างจากค่าเริ่มต้น) แล้วรันทีละช่อง
-5. ขั้นที่ 3 เลือกโมเดล (`NUM_IMAGES` ค่าเริ่มต้น 100, `0` = ทุกรูป) · ขั้นที่ 8 ดาวน์โหลด ZIP
+1. เปิด `WisdomToothAI.ipynb` ใน Colab (File → Open notebook → GitHub)
+2. เลือกโมเดล (`NUM_IMAGES` ค่าเริ่มต้น 100, `0.4` = ทุกรูป) และ ดาวน์โหลด ZIP
 
 เปลี่ยนโมเดล → รันขั้นที่ 3 → 8 ใหม่ (ไม่ต้องติดตั้งซ้ำ)
 
@@ -48,7 +45,3 @@ WisdomToothAI/
 | `selected_detections.csv` | เฉพาะกรอบที่เลือกแสดง (≤ 1 ต่อด้านต่อรูป) |
 | `run_info.json` | โมเดล, พารามิเตอร์, เวอร์ชันไลบรารี, ยอดรวม |
 
-## หมายเหตุ
-- `CONFIDENCE_THRESHOLD` (ค่าเริ่มต้น `0.0` ตามโน้ตบุ๊กเดิม) ถูกส่งให้โมเดลโดยตรงด้วย เพื่อให้ Raw ไม่ถูกตัดที่ 0.4 ซึ่งเป็นค่าเริ่มต้นของไลบรารี
-- ข้อความบนภาพเป็นภาษาอังกฤษ เพราะ OpenCV วาดตัวอักษรไทยไม่ได้
-- ทดสอบโค้ด: `python -m unittest discover -s tests -v`
